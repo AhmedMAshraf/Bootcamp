@@ -6,6 +6,12 @@
  */ 
 #include "../Includes/DIO.h"
 
+/* DIO_WritePin */
+/* Parameters : uint8 , uint8 */
+/* I/p : PinNum , PinValue */
+/* O/p : nothing */
+/* Return : void */
+/* Function that write to DIO pin */
 void DIO_WritePin(uint8 PinNum,uint8 PinValue)
 {
 	if(PinValue == 1)
@@ -51,6 +57,12 @@ void DIO_WritePin(uint8 PinNum,uint8 PinValue)
 	else;
 }
 
+/* DIO_ReadPin */
+/* Parameters : uint8  */
+/* I/p : PinNum */
+/* O/p : Value of pin */
+/* Return : unint8 */
+/* Function that read value of DIO pin */
 uint8 DIO_ReadPin(uint8 PinNum)
 {
 	uint8 Pin =0;
@@ -73,7 +85,12 @@ uint8 DIO_ReadPin(uint8 PinNum)
 	else;
 	return Pin ;
 }
-
+/* DIO_SetPinDirection */
+/* Parameters : uint8 , uint8 */
+/* I/p : PinNum , PinDirection */
+/* O/p : nothing */
+/* Return : void */
+/* Function that Sets direction of DIO pin */
 void DIO_SetPinDirection(uint8 PinNum,uint8 PinDirection)
 {
 	if(PinDirection == 1)

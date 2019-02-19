@@ -449,13 +449,13 @@ END GROUP
  .debug_abbrev  0x00000621       0xaf main.o
  .debug_abbrev  0x000006d0       0x6b Timer/timer.o
 
-.debug_line     0x00000000      0x6d7
+.debug_line     0x00000000      0x6d8
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x115 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega32/avr5/crtatmega32.o
- .debug_line    0x00000115      0x191 DIO/DIO.o
- .debug_line    0x000002a6      0x2e1 Lcd/LCD.o
- .debug_line    0x00000587       0x8e main.o
- .debug_line    0x00000615       0xc2 Timer/timer.o
+ .debug_line    0x00000115      0x192 DIO/DIO.o
+ .debug_line    0x000002a7      0x2e1 Lcd/LCD.o
+ .debug_line    0x00000588       0x8e main.o
+ .debug_line    0x00000616       0xc2 Timer/timer.o
 
 .debug_frame    0x00000000      0x174
  *(.debug_frame)

@@ -17,7 +17,7 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   6 .debug_abbrev 0000073b  00000000  00000000  0000193f  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   000006d7  00000000  00000000  0000207a  2**0
+  7 .debug_line   000006d8  00000000  00000000  0000207a  2**0
                   CONTENTS, READONLY, DEBUGGING
   8 .debug_frame  00000174  00000000  00000000  00002754  2**2
                   CONTENTS, READONLY, DEBUGGING
@@ -230,7 +230,9 @@ Disassembly of section .text:
  19c:	08 95       	ret
 
 0000019e <DIO_SetPinDirection>:
-
+/* O/p : nothing */
+/* Return : void */
+/* Function that Sets direction of DIO pin */
 void DIO_SetPinDirection(uint8 PinNum,uint8 PinDirection)
 {
 	if(PinDirection == 1)
@@ -999,7 +1001,7 @@ void timer_init()
 	
 	
 	
-	/* Clear TCNT0 & OCR0 */
+	/* Clear TCNT0 & set OCR0 to 250 */
 	TCNT0 = 0x00 ;
  62e:	12 be       	out	0x32, r1	; 50
 	OCR0 = 250 ;
