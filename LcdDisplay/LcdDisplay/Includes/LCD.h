@@ -21,5 +21,6 @@ void LCD_displayString(uint8 *str);
 void LCD_gotoRowColumn(uint8 row , uint8 col);
 void LCD_sendString_RowCol(uint8 *str , uint8 row , uint8 col);
 void LCD_clear(void);
+void LCD_Custom_Char (uint8 loc, uint8 *msg);
 
 #endif /* LCD_H_ */

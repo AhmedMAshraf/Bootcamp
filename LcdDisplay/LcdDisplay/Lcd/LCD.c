@@ -30,6 +30,10 @@ void LCD_init(void)
 	LCD_sendCommand(LCD_CMD_DISPLAY_ON);
 	/* Force cursor begin at 1st line */
 	LCD_sendCommand(LCD_CMD_CURSOR_1ST_LINE);
+	/* Auto Increment Cursor */
+	LCD_sendCommand(0x06);
+	/*Cursor off */
+	LCD_sendCommand(LCD_CMD_OFF_CURSOR);
 }
 
 void LCD_sendCommand(uint8 command)
@@ -130,43 +134,50 @@ void LCD_displayString(uint8 *str)
 	{
 		LCD_displayChar(str[n]);
 		n++;
-		if (n==LCD_ROWS)
+		if (n==LCD_COLS)
 		{
-			LCD_sendCommand(LCD_CMD_CURSOR_2ND_LINE);
+			LCD_sendCommand(LCD_CMD_INC_CURSOR);
 		}
 	}
 }
 
 void LCD_gotoRowColumn(uint8 row , uint8 col)
 {
-	uint8 i = 0 ;
-	if(row==1)
+	
+	
+	col--;
+	if (row==1)
 	{
-		LCD_sendCommand(LCD_CMD_CURSOR_1ST_LINE);
+		LCD_sendCommand(0x80+col);
 	}
-	else if(row==LCD_ROWS)
+	if (row==2)
 	{
-		LCD_sendCommand(LCD_CMD_CURSOR_2ND_LINE);
+		LCD_sendCommand(0xC0+col);
 	}
-	else;
-	if(col <= LCD_COLS)
-	{
-		for(i ; i<col ; i++)
-		{
-			LCD_sendCommand(LCD_CMD_INC_CURSOR);
-		}
-	}
-	else;
+
 	
 }
 
 void LCD_sendString_RowCol(uint8 *str , uint8 row , uint8 col)
 {
 	LCD_gotoRowColumn(row,col);
+	timer_delay(DELAY_10_MS);
 	LCD_displayString(str);
 }
 
 void LCD_clear(void)
 {
 	LCD_sendCommand(LCD_CMD_CLR);
+	LCD_sendCommand (LCD_CMD_CURSOR_1ST_LINE);
+}
+
+void LCD_Custom_Char (uint8 loc, uint8 *msg)
+{
+	uint8 i;
+	if(loc<8)
+	{
+		LCD_sendCommand (0x40 + (loc*8));	/* Command 0x40 and onwards forces the device to point CGRAM address */
+		for(i=0;i<8;i++)	/* Write 8 byte for generation of 1 character */
+		LCD_displayChar(msg[i]);
+	}
 }

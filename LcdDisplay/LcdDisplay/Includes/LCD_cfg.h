@@ -30,6 +30,8 @@
 #define LCD_CMD_4B_MODE 0x28
 #define LCD_CMD_CURSOR_2ND_LINE 0xC0
 #define LCD_CMD_INC_CURSOR 0x14
+#define LCD_CMD_OFF_CURSOR 0x0C
+
 
 #define LCD_COLS 16
 #define LCD_ROWS 2

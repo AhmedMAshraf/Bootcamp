@@ -13,7 +13,8 @@
 #include "MemmoryMappedRegister.h"
 #include "DIO.h"
 
-#define DELAY_10_MS 10
+#define DELAY_10_MS 1
+#define DELAY_1_SEC 500
 void timer_init();
 
 void timer_delay(uint32 n);
