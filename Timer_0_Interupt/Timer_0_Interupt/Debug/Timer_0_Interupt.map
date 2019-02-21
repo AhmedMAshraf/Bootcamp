@@ -417,21 +417,21 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0xa34
+.debug_info     0x00000000      0xa48
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x4e6 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega32/avr5/crtatmega32.o
  .debug_info    0x000004e6      0x13f DIO/DIO.o
- .debug_info    0x00000625       0xe4 ISR/ISR.o
- .debug_info    0x00000709      0x282 main.o
- .debug_info    0x0000098b       0xa9 Timer/timer.o
+ .debug_info    0x00000625       0xee ISR/ISR.o
+ .debug_info    0x00000713      0x28c main.o
+ .debug_info    0x0000099f       0xa9 Timer/timer.o
 
-.debug_abbrev   0x00000000      0x6b2
+.debug_abbrev   0x00000000      0x6c0
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x4a3 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega32/avr5/crtatmega32.o
  .debug_abbrev  0x000004a3       0xa5 DIO/DIO.o
- .debug_abbrev  0x00000548       0x62 ISR/ISR.o
- .debug_abbrev  0x000005aa       0xb9 main.o
- .debug_abbrev  0x00000663       0x4f Timer/timer.o
+ .debug_abbrev  0x00000548       0x69 ISR/ISR.o
+ .debug_abbrev  0x000005b1       0xc0 main.o
+ .debug_abbrev  0x00000671       0x4f Timer/timer.o
 
 .debug_line     0x00000000      0x5db
  *(.debug_line .debug_line.* .debug_line_end)

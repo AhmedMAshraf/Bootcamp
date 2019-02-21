@@ -14,8 +14,8 @@
 #define FLAG_SET 1
 #define FLAG_RESET 0
 
-extern uint16 Timer_0_Flag ;
-extern uint8 Ext_Int_2_Flag ;
+extern volatile uint16 Timer_0_Flag ;
+extern volatile uint8 Ext_Int_2_Flag ;
 
 int main(void)
 {

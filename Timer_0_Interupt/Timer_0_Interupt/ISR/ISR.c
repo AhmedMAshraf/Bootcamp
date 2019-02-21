@@ -8,8 +8,8 @@
 
 
 
-uint16 Timer_0_Flag = 0 ;
-uint8 Ext_Int_2_Flag = 0 ;
+uint16 volatile Timer_0_Flag = 0 ;
+uint8 volatile Ext_Int_2_Flag = 0 ;
 
 /*Interupt service routine for timer0 overflow */
 
