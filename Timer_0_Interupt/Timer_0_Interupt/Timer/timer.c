@@ -23,8 +23,8 @@ void timer_init()
 	Set_Bit(TIMSK,OCIE0);
 	
 	/* Clear TCNT0 & set OCR0 to 250 */
-	TCNT0 = 0x00 ;
-	OCR0 = 124 ;
+	TCNT0 = ZERO ;
+	OCR0 = OCR0_VALUE ;
 	
 	/* 64 Prescaler */
 	Set_Bit(TCCR0,0);
@@ -42,12 +42,13 @@ void timer_delay(uint32 n)
 	/* Reset Over Flow flag*/
 	Set_Bit(TIFR,0);
 	/* Reset Timer count */
-	TCNT0 = 0x00 ;
+	TCNT0 = ZERO ;
 	
 	/* Each OF = 1ms */
 	for(n ; n>0 ; n--)
 	{
 		while(!(TIFR&0x02));
+		/*Clear Flag */
 		TIFR |= 0x02 ;
 	}
 	

@@ -13,21 +13,21 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000004f8  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 000000a0  00000000  00000000  00000534  2**0
+  5 .debug_aranges 00000098  00000000  00000000  00000534  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000a6b  00000000  00000000  000005d4  2**0
+  6 .debug_info   00000a34  00000000  00000000  000005cc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000006e0  00000000  00000000  0000103f  2**0
+  7 .debug_abbrev 000006b2  00000000  00000000  00001000  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000659  00000000  00000000  0000171f  2**0
+  8 .debug_line   000005db  00000000  00000000  000016b2  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000000f4  00000000  00000000  00001d78  2**2
+  9 .debug_frame  000000e4  00000000  00000000  00001c90  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000003df  00000000  00000000  00001e6c  2**0
+ 10 .debug_str    000003c4  00000000  00000000  00001d74  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000519  00000000  00000000  0000224b  2**0
+ 11 .debug_loc    00000519  00000000  00000000  00002138  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000060  00000000  00000000  00002764  2**0
+ 12 .debug_ranges 00000058  00000000  00000000  00002651  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -419,9 +419,9 @@ void DIO_SetPinDirection(uint8 PinNum,uint8 PinDirection)
  2b2:	08 95       	ret
 
 000002b4 <__vector_10>:
-	Set_Bit(MCUCSR,ISC2);
-	Set_Bit(GICR,INT2);
-}
+uint8 Ext_Int_2_Flag = 0 ;
+
+/*Interupt service routine for timer0 overflow */
 
 ISR(TIMER0_COMP_vect)
 {
@@ -449,6 +449,8 @@ ISR(TIMER0_COMP_vect)
 
 000002e2 <__vector_3>:
 
+/*Interupt service routine for External INT2 */
+
 ISR(INT2_vect)
 {
  2e2:	1f 92       	push	r1
@@ -457,7 +459,7 @@ ISR(INT2_vect)
  2e8:	0f 92       	push	r0
  2ea:	11 24       	eor	r1, r1
  2ec:	8f 93       	push	r24
-	Ext_Int_2_Flag = 1 ;
+	Ext_Int_2_Flag = FLAG_SET ;
  2ee:	81 e0       	ldi	r24, 0x01	; 1
  2f0:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <_edata>
  2f4:	8f 91       	pop	r24
@@ -468,14 +470,16 @@ ISR(INT2_vect)
  2fe:	18 95       	reti
 
 00000300 <main>:
-extern uint8 Ext_Int_2_Flag ;
 
 int main(void)
 {
     /* Replace with your application code */
+	
 	timer_init();
  300:	0e 94 0f 02 	call	0x41e	; 0x41e <timer_init>
+	
 	/* Initialize External interupt */
+	
 	Set_Bit(MCUCSR,ISC2);
  304:	84 b7       	in	r24, 0x34	; 52
  306:	80 64       	ori	r24, 0x40	; 64
@@ -535,15 +539,15 @@ int main(void)
  35a:	8f e0       	ldi	r24, 0x0F	; 15
  35c:	0e 94 3e 00 	call	0x7c	; 0x7c <DIO_WritePin>
 
-			if(Ext_Int_2_Flag==1)
+			if(Ext_Int_2_Flag==FLAG_SET)
  360:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <_edata>
  364:	81 30       	cpi	r24, 0x01	; 1
  366:	39 f4       	brne	.+14     	; 0x376 <main+0x76>
 			{
 				State = STOP ;
-				Ext_Int_2_Flag=0;
+				Ext_Int_2_Flag = FLAG_RESET;
  368:	10 92 60 00 	sts	0x0060, r1	; 0x800060 <_edata>
-				Timer_0_Flag = 0 ;
+				Timer_0_Flag = FLAG_RESET ;
  36c:	10 92 62 00 	sts	0x0062, r1	; 0x800062 <Timer_0_Flag+0x1>
  370:	10 92 61 00 	sts	0x0061, r1	; 0x800061 <Timer_0_Flag>
 				break ;
@@ -556,18 +560,18 @@ int main(void)
  380:	93 40       	sbci	r25, 0x03	; 3
  382:	10 f3       	brcs	.-60     	; 0x348 <main+0x48>
 			{
-				Timer_0_Flag = 0 ;
+				Timer_0_Flag = FLAG_RESET;
  384:	10 92 62 00 	sts	0x0062, r1	; 0x800062 <Timer_0_Flag+0x1>
  388:	10 92 61 00 	sts	0x0061, r1	; 0x800061 <Timer_0_Flag>
  38c:	26 c0       	rjmp	.+76     	; 0x3da <main+0xda>
 			DIO_WritePin(PINB7,HIGH);
 			
-			if(Ext_Int_2_Flag==1)
+			if(Ext_Int_2_Flag==FLAG_SET)
 			{
 				State = STOP ;
-				Ext_Int_2_Flag=0;
+				Ext_Int_2_Flag=FLAG_RESET;
  38e:	10 92 60 00 	sts	0x0060, r1	; 0x800060 <_edata>
-				Timer_0_Flag = 0 ;
+				Timer_0_Flag =FLAG_RESET ;
  392:	10 92 62 00 	sts	0x0062, r1	; 0x800062 <Timer_0_Flag+0x1>
  396:	10 92 61 00 	sts	0x0061, r1	; 0x800061 <Timer_0_Flag>
 				break ;
@@ -580,18 +584,18 @@ int main(void)
  3a6:	93 40       	sbci	r25, 0x03	; 3
  3a8:	c0 f0       	brcs	.+48     	; 0x3da <main+0xda>
 			{
-				Timer_0_Flag = 0 ;
+				Timer_0_Flag = FLAG_RESET ;
  3aa:	10 92 62 00 	sts	0x0062, r1	; 0x800062 <Timer_0_Flag+0x1>
  3ae:	10 92 61 00 	sts	0x0061, r1	; 0x800061 <Timer_0_Flag>
  3b2:	24 c0       	rjmp	.+72     	; 0x3fc <main+0xfc>
 			DIO_WritePin(PINB6,HIGH);
 			DIO_WritePin(PINB7,LOW);
-			if(Ext_Int_2_Flag==1)
+			if(Ext_Int_2_Flag==FLAG_SET)
 			{
 				State = STOP ;
-				Ext_Int_2_Flag=0;
+				Ext_Int_2_Flag=FLAG_RESET;
  3b4:	10 92 60 00 	sts	0x0060, r1	; 0x800060 <_edata>
-				Timer_0_Flag = 0 ;
+				Timer_0_Flag = FLAG_RESET ;
  3b8:	10 92 62 00 	sts	0x0062, r1	; 0x800062 <Timer_0_Flag+0x1>
  3bc:	10 92 61 00 	sts	0x0061, r1	; 0x800061 <Timer_0_Flag>
 				break ;
@@ -604,7 +608,7 @@ int main(void)
  3cc:	93 40       	sbci	r25, 0x03	; 3
  3ce:	b0 f0       	brcs	.+44     	; 0x3fc <main+0xfc>
 			{
-				Timer_0_Flag = 0 ;
+				Timer_0_Flag =FLAG_RESET ;
  3d0:	10 92 62 00 	sts	0x0062, r1	; 0x800062 <Timer_0_Flag+0x1>
  3d4:	10 92 61 00 	sts	0x0061, r1	; 0x800061 <Timer_0_Flag>
  3d8:	b7 cf       	rjmp	.-146    	; 0x348 <main+0x48>
@@ -626,7 +630,7 @@ int main(void)
  3ec:	8f e0       	ldi	r24, 0x0F	; 15
  3ee:	0e 94 3e 00 	call	0x7c	; 0x7c <DIO_WritePin>
 			
-			if(Ext_Int_2_Flag==1)
+			if(Ext_Int_2_Flag==FLAG_SET)
  3f2:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <_edata>
  3f6:	81 30       	cpi	r24, 0x01	; 1
  3f8:	89 f6       	brne	.-94     	; 0x39c <main+0x9c>
@@ -648,7 +652,7 @@ int main(void)
  40c:	60 e0       	ldi	r22, 0x00	; 0
  40e:	8f e0       	ldi	r24, 0x0F	; 15
  410:	0e 94 3e 00 	call	0x7c	; 0x7c <DIO_WritePin>
-			if(Ext_Int_2_Flag==1)
+			if(Ext_Int_2_Flag==FLAG_SET)
  414:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <_edata>
  418:	81 30       	cpi	r24, 0x01	; 1
  41a:	99 f6       	brne	.-90     	; 0x3c2 <main+0xc2>
@@ -676,9 +680,9 @@ void timer_init()
  42e:	89 bf       	out	0x39, r24	; 57
 	
 	/* Clear TCNT0 & set OCR0 to 250 */
-	TCNT0 = 0x00 ;
+	TCNT0 = ZERO ;
  430:	12 be       	out	0x32, r1	; 50
-	OCR0 = 124 ;
+	OCR0 = OCR0_VALUE ;
  432:	8c e7       	ldi	r24, 0x7C	; 124
  434:	8c bf       	out	0x3c, r24	; 60
 	

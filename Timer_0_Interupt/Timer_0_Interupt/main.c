@@ -7,9 +7,12 @@
 
 #include "Includes/DIO.h"
 #include "Includes/timer.h"
+
 #define GO 0
 #define STOP 1
 #define GET_READY 2
+#define FLAG_SET 1
+#define FLAG_RESET 0
 
 extern uint16 Timer_0_Flag ;
 extern uint8 Ext_Int_2_Flag ;
@@ -17,8 +20,11 @@ extern uint8 Ext_Int_2_Flag ;
 int main(void)
 {
     /* Replace with your application code */
+	
 	timer_init();
+	
 	/* Initialize External interupt */
+	
 	Set_Bit(MCUCSR,ISC2);
 	Set_Bit(GICR,INT2);
 	
@@ -43,16 +49,16 @@ int main(void)
 			DIO_WritePin(PINB6,LOW);
 			DIO_WritePin(PINB7,LOW);
 
-			if(Ext_Int_2_Flag==1)
+			if(Ext_Int_2_Flag==FLAG_SET)
 			{
 				State = STOP ;
-				Ext_Int_2_Flag=0;
-				Timer_0_Flag = 0 ;
+				Ext_Int_2_Flag = FLAG_RESET;
+				Timer_0_Flag = FLAG_RESET ;
 				break ;
 			}
 			if(Timer_0_Flag >= ONE_SECOND)
 			{
-				Timer_0_Flag = 0 ;
+				Timer_0_Flag = FLAG_RESET;
 				State = STOP ;
 			}
 			break;
@@ -62,16 +68,16 @@ int main(void)
 			DIO_WritePin(PINB6,LOW);
 			DIO_WritePin(PINB7,HIGH);
 			
-			if(Ext_Int_2_Flag==1)
+			if(Ext_Int_2_Flag==FLAG_SET)
 			{
 				State = STOP ;
-				Ext_Int_2_Flag=0;
-				Timer_0_Flag = 0 ;
+				Ext_Int_2_Flag=FLAG_RESET;
+				Timer_0_Flag =FLAG_RESET ;
 				break ;
 			}
 			if(Timer_0_Flag >= ONE_SECOND)
 			{
-				Timer_0_Flag = 0 ;
+				Timer_0_Flag = FLAG_RESET ;
 				State = GET_READY ;
 			}
 			break;
@@ -80,16 +86,16 @@ int main(void)
 			DIO_WritePin(PINB5,LOW); 
 			DIO_WritePin(PINB6,HIGH);
 			DIO_WritePin(PINB7,LOW);
-			if(Ext_Int_2_Flag==1)
+			if(Ext_Int_2_Flag==FLAG_SET)
 			{
 				State = STOP ;
-				Ext_Int_2_Flag=0;
-				Timer_0_Flag = 0 ;
+				Ext_Int_2_Flag=FLAG_RESET;
+				Timer_0_Flag = FLAG_RESET ;
 				break ;
 			}
 			if(Timer_0_Flag >= ONE_SECOND)
 			{
-				Timer_0_Flag = 0 ;
+				Timer_0_Flag =FLAG_RESET ;
 				State = GO ;
 			}
 			break;

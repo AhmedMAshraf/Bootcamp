@@ -13,8 +13,8 @@
 #include <avr/interrupt.h>
 #include "DIO.h"
 
+#define FLAG_SET 1
 
-void ISR_INT2_Init(void);
 
 
 #endif /* ISR_H_ */

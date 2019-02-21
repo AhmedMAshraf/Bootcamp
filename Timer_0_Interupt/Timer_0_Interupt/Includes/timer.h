@@ -16,6 +16,8 @@
 #define DELAY_10_MS 1
 #define DELAY_1_SEC 500
 #define ONE_SECOND 1000
+#define OCR0_VALUE 124
+#define ZERO 0
 void timer_init();
 
 void timer_delay(uint32 n);
