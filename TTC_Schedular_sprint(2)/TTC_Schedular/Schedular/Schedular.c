@@ -42,6 +42,8 @@ void SchedulerInit (void)
 /**************************************************/
 void SchedulerStart(void)
 {
+	/*Sort Tasks*/
+	SchedularSortTasks();
 	/* Init and start the timer */
 	timer_init(OS_TICK_INTERVAL_MSEC);
 	
@@ -98,7 +100,7 @@ void Pre_filled(vtask ptr[] , uint8 Array_Size)
 /* scheduler_Add_Struct                                            */
 /* Parameters : vtask StructToAdd                                  */
 /* I/p : Array of structs (Tasks)                                  */
-/* O/p : N/A                                                       */
+/* O/p : 1 if added succefully 0 if not                                                      */
 /* Return : uint8                                                  */
 /* Function that add a new task to the list                        */
 /*******************************************************************/
@@ -111,9 +113,36 @@ uint8 scheduler_Add_Struct(vtask StructToAdd)
 		/* Add the passed struct the list and inc. the index */
 		TaskArray[No_Of_Elements] = StructToAdd ;
 		No_Of_Elements ++ ;
-		ReturnCondition =1 ;
+		ReturnCondition = 1 ;
 	}
 	else
 		ReturnCondition = 0 ;
 	return ReturnCondition ;
 }		
+
+
+/*******************************************************************/
+/* SchedularSortTasks                                              */
+/* Parameters : N/A                                                */
+/* I/p : N/A                                                       */
+/* O/p : N/A                                                       */
+/* Return : N/A                                                    */
+/* Function that sort the tasks according to priority              */
+/*******************************************************************/
+void SchedularSortTasks(void)
+{
+	uint8 i , j  ;
+	vtask TempStruct ;
+	for (i=0; i < No_Of_Elements; ++i)
+	{
+		for (j = i+1; j < No_Of_Elements; ++j)
+		{
+			if (TaskArray[i].Priority > TaskArray[j].Priority)
+			{				
+				TempStruct =  TaskArray[i];
+				TaskArray[i] = TaskArray[j];
+				TaskArray[j] = TempStruct;
+			}	
+		}
+	}
+}
