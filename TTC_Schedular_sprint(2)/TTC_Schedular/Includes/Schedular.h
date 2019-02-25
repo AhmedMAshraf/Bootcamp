@@ -26,7 +26,6 @@ void SchedulerStart (void);
 void Pre_filled(vtask ptr[] , uint8 Array_Size);
 void Set_Flag(void);
 uint8 scheduler_Add_Struct(vtask StructToAdd);
-void SchedularSortTasks(void);
 
 
 extern volatile uint8 Flag ;

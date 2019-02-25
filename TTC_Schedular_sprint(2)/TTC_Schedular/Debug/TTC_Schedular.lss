@@ -3,31 +3,31 @@ TTC_Schedular.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         000004f0  00000000  00000000  00000094  2**1
+  0 .text         000004cc  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         0000001c  00800060  000004f0  00000584  2**0
+  1 .data         0000001c  00800060  000004cc  00000560  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          00000020  0080007c  0080007c  000005a0  2**0
+  2 .bss          00000020  0080007c  0080007c  0000057c  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  000005a0  2**0
+  3 .comment      00000030  00000000  00000000  0000057c  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000005d0  2**2
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000005ac  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000100  00000000  00000000  0000060c  2**0
+  5 .debug_aranges 000000f8  00000000  00000000  000005e8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000cda  00000000  00000000  0000070c  2**0
+  6 .debug_info   00000d62  00000000  00000000  000006e0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000008ce  00000000  00000000  000013e6  2**0
+  7 .debug_abbrev 00000928  00000000  00000000  00001442  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000741  00000000  00000000  00001cb4  2**0
+  8 .debug_line   00000754  00000000  00000000  00001d6a  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000210  00000000  00000000  000023f8  2**2
+  9 .debug_frame  000001f0  00000000  00000000  000024c0  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000552  00000000  00000000  00002608  2**0
+ 10 .debug_str    00000560  00000000  00000000  000026b0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000757  00000000  00000000  00002b5a  2**0
+ 11 .debug_loc    0000074d  00000000  00000000  00002c10  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000000b0  00000000  00000000  000032b1  2**0
+ 12 .debug_ranges 000000a8  00000000  00000000  0000335d  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -43,7 +43,7 @@ Disassembly of section .text:
   1c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
   20:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
   24:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
-  28:	0c 94 4f 02 	jmp	0x49e	; 0x49e <__vector_10>
+  28:	0c 94 3d 02 	jmp	0x47a	; 0x47a <__vector_10>
   2c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
   30:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
   34:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
@@ -67,7 +67,7 @@ Disassembly of section .text:
   60:	10 e0       	ldi	r17, 0x00	; 0
   62:	a0 e6       	ldi	r26, 0x60	; 96
   64:	b0 e0       	ldi	r27, 0x00	; 0
-  66:	e0 ef       	ldi	r30, 0xF0	; 240
+  66:	ec ec       	ldi	r30, 0xCC	; 204
   68:	f4 e0       	ldi	r31, 0x04	; 4
   6a:	02 c0       	rjmp	.+4      	; 0x70 <__do_copy_data+0x10>
   6c:	05 90       	lpm	r0, Z+
@@ -90,7 +90,7 @@ Disassembly of section .text:
   82:	b2 07       	cpc	r27, r18
   84:	e1 f7       	brne	.-8      	; 0x7e <.do_clear_bss_loop>
   86:	0e 94 d7 00 	call	0x1ae	; 0x1ae <main>
-  8a:	0c 94 76 02 	jmp	0x4ec	; 0x4ec <_exit>
+  8a:	0c 94 64 02 	jmp	0x4c8	; 0x4c8 <_exit>
 
 0000008e <__bad_interrupt>:
   8e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -321,7 +321,7 @@ int main(void)
  1e2:	0e 94 4c 01 	call	0x298	; 0x298 <SchedulerInit>
 	
 	/* Initialize tasks i want to add */
-	vtask Task0 = {BlinkLed0,2000,2000,4};
+	vtask Task0 = {BlinkLed0,2000,2000,0};
  1e6:	87 e0       	ldi	r24, 0x07	; 7
  1e8:	e0 e6       	ldi	r30, 0x60	; 96
  1ea:	f0 e0       	ldi	r31, 0x00	; 0
@@ -331,7 +331,7 @@ int main(void)
  1f2:	0d 92       	st	X+, r0
  1f4:	8a 95       	dec	r24
  1f6:	e1 f7       	brne	.-8      	; 0x1f0 <main+0x42>
-	vtask Task1 = {BlinkLed1,2500,2500,2};
+	vtask Task1 = {BlinkLed1,2500,2500,1};
  1f8:	87 e0       	ldi	r24, 0x07	; 7
  1fa:	e7 e6       	ldi	r30, 0x67	; 103
  1fc:	f0 e0       	ldi	r31, 0x00	; 0
@@ -341,7 +341,7 @@ int main(void)
  204:	0d 92       	st	X+, r0
  206:	8a 95       	dec	r24
  208:	e1 f7       	brne	.-8      	; 0x202 <main+0x54>
-	vtask Task2 = {Blinkled2,3000,3000,1};
+	vtask Task2 = {Blinkled2,3000,3000,2};
  20a:	87 e0       	ldi	r24, 0x07	; 7
  20c:	ee e6       	ldi	r30, 0x6E	; 110
  20e:	f0 e0       	ldi	r31, 0x00	; 0
@@ -371,7 +371,7 @@ int main(void)
  236:	6d 81       	ldd	r22, Y+5	; 0x05
  238:	7e 81       	ldd	r23, Y+6	; 0x06
  23a:	8f 81       	ldd	r24, Y+7	; 0x07
- 23c:	0e 94 72 01 	call	0x2e4	; 0x2e4 <scheduler_Add_Struct>
+ 23c:	0e 94 d8 01 	call	0x3b0	; 0x3b0 <scheduler_Add_Struct>
 	if(scheduler_Add_Struct(Task1));
  240:	28 85       	ldd	r18, Y+8	; 0x08
  242:	39 85       	ldd	r19, Y+9	; 0x09
@@ -380,7 +380,7 @@ int main(void)
  248:	6c 85       	ldd	r22, Y+12	; 0x0c
  24a:	7d 85       	ldd	r23, Y+13	; 0x0d
  24c:	8e 85       	ldd	r24, Y+14	; 0x0e
- 24e:	0e 94 72 01 	call	0x2e4	; 0x2e4 <scheduler_Add_Struct>
+ 24e:	0e 94 d8 01 	call	0x3b0	; 0x3b0 <scheduler_Add_Struct>
 	if(scheduler_Add_Struct(Task2));
  252:	2f 85       	ldd	r18, Y+15	; 0x0f
  254:	38 89       	ldd	r19, Y+16	; 0x10
@@ -389,7 +389,7 @@ int main(void)
  25a:	6b 89       	ldd	r22, Y+19	; 0x13
  25c:	7c 89       	ldd	r23, Y+20	; 0x14
  25e:	8d 89       	ldd	r24, Y+21	; 0x15
- 260:	0e 94 72 01 	call	0x2e4	; 0x2e4 <scheduler_Add_Struct>
+ 260:	0e 94 d8 01 	call	0x3b0	; 0x3b0 <scheduler_Add_Struct>
 	if(scheduler_Add_Struct(Task3));
  264:	2e 89       	ldd	r18, Y+22	; 0x16
  266:	3f 89       	ldd	r19, Y+23	; 0x17
@@ -398,11 +398,11 @@ int main(void)
  26c:	6a 8d       	ldd	r22, Y+26	; 0x1a
  26e:	7b 8d       	ldd	r23, Y+27	; 0x1b
  270:	8c 8d       	ldd	r24, Y+28	; 0x1c
- 272:	0e 94 72 01 	call	0x2e4	; 0x2e4 <scheduler_Add_Struct>
+ 272:	0e 94 d8 01 	call	0x3b0	; 0x3b0 <scheduler_Add_Struct>
 	
 	/* Call SchedulerInit_AndStart to init timer tics to 1 ms */
 	SchedulerStart();   
- 276:	0e 94 0d 02 	call	0x41a	; 0x41a <SchedulerStart>
+ 276:	0e 94 72 01 	call	0x2e4	; 0x2e4 <SchedulerStart>
 }
  27a:	80 e0       	ldi	r24, 0x00	; 0
  27c:	90 e0       	ldi	r25, 0x00	; 0
@@ -436,7 +436,7 @@ void SchedulerInit (void)
 	Set_Call_Back(Set_Flag);
  298:	88 e4       	ldi	r24, 0x48	; 72
  29a:	91 e0       	ldi	r25, 0x01	; 1
- 29c:	0e 94 4a 02 	call	0x494	; 0x494 <Set_Call_Back>
+ 29c:	0e 94 38 02 	call	0x470	; 0x470 <Set_Call_Back>
  2a0:	08 95       	ret
 
 000002a2 <Pre_filled>:
@@ -503,12 +503,12 @@ void Pre_filled(vtask ptr[] , uint8 Array_Size)
  2e0:	0f 91       	pop	r16
  2e2:	08 95       	ret
 
-000002e4 <scheduler_Add_Struct>:
-/* O/p : 1 if added succefully 0 if not                                                      */
-/* Return : uint8                                                  */
-/* Function that add a new task to the list                        */
-/*******************************************************************/
-uint8 scheduler_Add_Struct(vtask StructToAdd)
+000002e4 <SchedulerStart>:
+/* O/p : N/A                                      */
+/* Return : void                                  */
+/* Function that Starts Scheduler                 */
+/**************************************************/
+void SchedulerStart(void)
 {
  2e4:	cf 93       	push	r28
  2e6:	df 93       	push	r29
@@ -520,383 +520,364 @@ uint8 scheduler_Add_Struct(vtask StructToAdd)
  2f2:	de bf       	out	0x3e, r29	; 62
  2f4:	0f be       	out	0x3f, r0	; 63
  2f6:	cd bf       	out	0x3d, r28	; 61
- 2f8:	29 83       	std	Y+1, r18	; 0x01
- 2fa:	3a 83       	std	Y+2, r19	; 0x02
- 2fc:	4b 83       	std	Y+3, r20	; 0x03
- 2fe:	5c 83       	std	Y+4, r21	; 0x04
- 300:	6d 83       	std	Y+5, r22	; 0x05
- 302:	7e 83       	std	Y+6, r23	; 0x06
- 304:	8f 83       	std	Y+7, r24	; 0x07
-	/* Check if the list is full */
-	uint8 ReturnCondition = 0 ;
-	if(No_Of_Elements < NUM_OF_TASKS)
- 306:	80 91 7c 00 	lds	r24, 0x007C	; 0x80007c <__data_end>
- 30a:	84 30       	cpi	r24, 0x04	; 4
- 30c:	b0 f4       	brcc	.+44     	; 0x33a <scheduler_Add_Struct+0x56>
-	{
-		/* Add the passed struct the list and inc. the index */
-		TaskArray[No_Of_Elements] = StructToAdd ;
- 30e:	a0 91 7c 00 	lds	r26, 0x007C	; 0x80007c <__data_end>
- 312:	87 e0       	ldi	r24, 0x07	; 7
- 314:	a8 9f       	mul	r26, r24
- 316:	d0 01       	movw	r26, r0
- 318:	11 24       	eor	r1, r1
- 31a:	a2 58       	subi	r26, 0x82	; 130
- 31c:	bf 4f       	sbci	r27, 0xFF	; 255
- 31e:	87 e0       	ldi	r24, 0x07	; 7
- 320:	fe 01       	movw	r30, r28
- 322:	31 96       	adiw	r30, 0x01	; 1
- 324:	01 90       	ld	r0, Z+
- 326:	0d 92       	st	X+, r0
- 328:	8a 95       	dec	r24
- 32a:	e1 f7       	brne	.-8      	; 0x324 <scheduler_Add_Struct+0x40>
-		No_Of_Elements ++ ;
- 32c:	80 91 7c 00 	lds	r24, 0x007C	; 0x80007c <__data_end>
- 330:	8f 5f       	subi	r24, 0xFF	; 255
- 332:	80 93 7c 00 	sts	0x007C, r24	; 0x80007c <__data_end>
-		ReturnCondition = 1 ;
- 336:	81 e0       	ldi	r24, 0x01	; 1
- 338:	01 c0       	rjmp	.+2      	; 0x33c <scheduler_Add_Struct+0x58>
-	}
-	else
-		ReturnCondition = 0 ;
- 33a:	80 e0       	ldi	r24, 0x00	; 0
-	return ReturnCondition ;
-}		
- 33c:	27 96       	adiw	r28, 0x07	; 7
- 33e:	0f b6       	in	r0, 0x3f	; 63
- 340:	f8 94       	cli
- 342:	de bf       	out	0x3e, r29	; 62
- 344:	0f be       	out	0x3f, r0	; 63
- 346:	cd bf       	out	0x3d, r28	; 61
- 348:	df 91       	pop	r29
- 34a:	cf 91       	pop	r28
- 34c:	08 95       	ret
-
-0000034e <SchedularSortTasks>:
-/* O/p : N/A                                                       */
-/* Return : N/A                                                    */
 /* Function that sort the tasks according to priority              */
 /*******************************************************************/
-void SchedularSortTasks(void)
+static void SchedularSortTasks(void)
 {
- 34e:	ff 92       	push	r15
- 350:	0f 93       	push	r16
- 352:	1f 93       	push	r17
- 354:	cf 93       	push	r28
- 356:	df 93       	push	r29
- 358:	cd b7       	in	r28, 0x3d	; 61
- 35a:	de b7       	in	r29, 0x3e	; 62
- 35c:	27 97       	sbiw	r28, 0x07	; 7
- 35e:	0f b6       	in	r0, 0x3f	; 63
- 360:	f8 94       	cli
- 362:	de bf       	out	0x3e, r29	; 62
- 364:	0f be       	out	0x3f, r0	; 63
- 366:	cd bf       	out	0x3d, r28	; 61
 	uint8 i , j  ;
-	vtask TempStruct ;
 	for (i=0; i < No_Of_Elements; ++i)
- 368:	40 e0       	ldi	r20, 0x00	; 0
- 36a:	46 c0       	rjmp	.+140    	; 0x3f8 <SchedularSortTasks+0xaa>
+ 2f8:	80 e0       	ldi	r24, 0x00	; 0
+ 2fa:	45 c0       	rjmp	.+138    	; 0x386 <SchedulerStart+0xa2>
 	{
 		for (j = i+1; j < No_Of_Elements; ++j)
- 36c:	ff 24       	eor	r15, r15
- 36e:	f3 94       	inc	r15
- 370:	f4 0e       	add	r15, r20
- 372:	80 91 7c 00 	lds	r24, 0x007C	; 0x80007c <__data_end>
- 376:	f8 16       	cp	r15, r24
- 378:	f0 f5       	brcc	.+124    	; 0x3f6 <SchedularSortTasks+0xa8>
- 37a:	8f 2d       	mov	r24, r15
+ 2fc:	51 e0       	ldi	r21, 0x01	; 1
+ 2fe:	58 0f       	add	r21, r24
+ 300:	90 91 7c 00 	lds	r25, 0x007C	; 0x80007c <__data_end>
+ 304:	59 17       	cp	r21, r25
+ 306:	f0 f5       	brcc	.+124    	; 0x384 <SchedulerStart+0xa0>
+ 308:	45 2f       	mov	r20, r21
 		{
 			if (TaskArray[i].Priority > TaskArray[j].Priority)
- 37c:	97 e0       	ldi	r25, 0x07	; 7
- 37e:	49 9f       	mul	r20, r25
- 380:	a0 01       	movw	r20, r0
- 382:	11 24       	eor	r1, r1
- 384:	42 58       	subi	r20, 0x82	; 130
- 386:	5f 4f       	sbci	r21, 0xFF	; 255
- 388:	ba 01       	movw	r22, r20
- 38a:	6a 5f       	subi	r22, 0xFA	; 250
- 38c:	7f 4f       	sbci	r23, 0xFF	; 255
- 38e:	08 2f       	mov	r16, r24
- 390:	10 e0       	ldi	r17, 0x00	; 0
- 392:	a7 e0       	ldi	r26, 0x07	; 7
- 394:	8a 9f       	mul	r24, r26
- 396:	f0 01       	movw	r30, r0
- 398:	11 24       	eor	r1, r1
- 39a:	e2 58       	subi	r30, 0x82	; 130
- 39c:	ff 4f       	sbci	r31, 0xFF	; 255
- 39e:	db 01       	movw	r26, r22
- 3a0:	2c 91       	ld	r18, X
- 3a2:	96 81       	ldd	r25, Z+6	; 0x06
- 3a4:	92 17       	cp	r25, r18
- 3a6:	10 f5       	brcc	.+68     	; 0x3ec <SchedularSortTasks+0x9e>
-			{				
-				TempStruct =  TaskArray[i];
- 3a8:	97 e0       	ldi	r25, 0x07	; 7
- 3aa:	fa 01       	movw	r30, r20
- 3ac:	de 01       	movw	r26, r28
- 3ae:	11 96       	adiw	r26, 0x01	; 1
- 3b0:	01 90       	ld	r0, Z+
- 3b2:	0d 92       	st	X+, r0
- 3b4:	9a 95       	dec	r25
- 3b6:	e1 f7       	brne	.-8      	; 0x3b0 <SchedularSortTasks+0x62>
-				TaskArray[i] = TaskArray[j];
- 3b8:	98 01       	movw	r18, r16
- 3ba:	22 0f       	add	r18, r18
- 3bc:	33 1f       	adc	r19, r19
- 3be:	22 0f       	add	r18, r18
- 3c0:	33 1f       	adc	r19, r19
- 3c2:	22 0f       	add	r18, r18
- 3c4:	33 1f       	adc	r19, r19
- 3c6:	20 1b       	sub	r18, r16
- 3c8:	31 0b       	sbc	r19, r17
- 3ca:	22 58       	subi	r18, 0x82	; 130
- 3cc:	3f 4f       	sbci	r19, 0xFF	; 255
- 3ce:	97 e0       	ldi	r25, 0x07	; 7
- 3d0:	f9 01       	movw	r30, r18
- 3d2:	da 01       	movw	r26, r20
- 3d4:	01 90       	ld	r0, Z+
- 3d6:	0d 92       	st	X+, r0
- 3d8:	9a 95       	dec	r25
- 3da:	e1 f7       	brne	.-8      	; 0x3d4 <SchedularSortTasks+0x86>
-				TaskArray[j] = TempStruct;
- 3dc:	97 e0       	ldi	r25, 0x07	; 7
- 3de:	fe 01       	movw	r30, r28
- 3e0:	31 96       	adiw	r30, 0x01	; 1
- 3e2:	d9 01       	movw	r26, r18
- 3e4:	01 90       	ld	r0, Z+
- 3e6:	0d 92       	st	X+, r0
- 3e8:	9a 95       	dec	r25
- 3ea:	e1 f7       	brne	.-8      	; 0x3e4 <SchedularSortTasks+0x96>
+ 30a:	27 e0       	ldi	r18, 0x07	; 7
+ 30c:	82 9f       	mul	r24, r18
+ 30e:	c0 01       	movw	r24, r0
+ 310:	11 24       	eor	r1, r1
+ 312:	82 58       	subi	r24, 0x82	; 130
+ 314:	9f 4f       	sbci	r25, 0xFF	; 255
+ 316:	bc 01       	movw	r22, r24
+ 318:	6a 5f       	subi	r22, 0xFA	; 250
+ 31a:	7f 4f       	sbci	r23, 0xFF	; 255
+ 31c:	04 2f       	mov	r16, r20
+ 31e:	10 e0       	ldi	r17, 0x00	; 0
+ 320:	a7 e0       	ldi	r26, 0x07	; 7
+ 322:	4a 9f       	mul	r20, r26
+ 324:	f0 01       	movw	r30, r0
+ 326:	11 24       	eor	r1, r1
+ 328:	e2 58       	subi	r30, 0x82	; 130
+ 32a:	ff 4f       	sbci	r31, 0xFF	; 255
+ 32c:	db 01       	movw	r26, r22
+ 32e:	3c 91       	ld	r19, X
+ 330:	26 81       	ldd	r18, Z+6	; 0x06
+ 332:	23 17       	cp	r18, r19
+ 334:	10 f5       	brcc	.+68     	; 0x37a <SchedulerStart+0x96>
+	}
+}
+static void Swap_Tasks (vtask *Task1 , vtask *Task2)
+{
+	vtask TempTask ;
+	TempTask = *Task1 ;
+ 336:	27 e0       	ldi	r18, 0x07	; 7
+ 338:	fc 01       	movw	r30, r24
+ 33a:	de 01       	movw	r26, r28
+ 33c:	11 96       	adiw	r26, 0x01	; 1
+ 33e:	01 90       	ld	r0, Z+
+ 340:	0d 92       	st	X+, r0
+ 342:	2a 95       	dec	r18
+ 344:	e1 f7       	brne	.-8      	; 0x33e <SchedulerStart+0x5a>
+	*Task1 = *Task2 ;
+ 346:	98 01       	movw	r18, r16
+ 348:	22 0f       	add	r18, r18
+ 34a:	33 1f       	adc	r19, r19
+ 34c:	22 0f       	add	r18, r18
+ 34e:	33 1f       	adc	r19, r19
+ 350:	22 0f       	add	r18, r18
+ 352:	33 1f       	adc	r19, r19
+ 354:	20 1b       	sub	r18, r16
+ 356:	31 0b       	sbc	r19, r17
+ 358:	22 58       	subi	r18, 0x82	; 130
+ 35a:	3f 4f       	sbci	r19, 0xFF	; 255
+ 35c:	17 e0       	ldi	r17, 0x07	; 7
+ 35e:	f9 01       	movw	r30, r18
+ 360:	dc 01       	movw	r26, r24
+ 362:	01 90       	ld	r0, Z+
+ 364:	0d 92       	st	X+, r0
+ 366:	1a 95       	dec	r17
+ 368:	e1 f7       	brne	.-8      	; 0x362 <SchedulerStart+0x7e>
+	*Task2 = TempTask ;
+ 36a:	17 e0       	ldi	r17, 0x07	; 7
+ 36c:	fe 01       	movw	r30, r28
+ 36e:	31 96       	adiw	r30, 0x01	; 1
+ 370:	d9 01       	movw	r26, r18
+ 372:	01 90       	ld	r0, Z+
+ 374:	0d 92       	st	X+, r0
+ 376:	1a 95       	dec	r17
+ 378:	e1 f7       	brne	.-8      	; 0x372 <SchedulerStart+0x8e>
+static void SchedularSortTasks(void)
 {
 	uint8 i , j  ;
-	vtask TempStruct ;
 	for (i=0; i < No_Of_Elements; ++i)
 	{
 		for (j = i+1; j < No_Of_Elements; ++j)
- 3ec:	8f 5f       	subi	r24, 0xFF	; 255
- 3ee:	90 91 7c 00 	lds	r25, 0x007C	; 0x80007c <__data_end>
- 3f2:	89 17       	cp	r24, r25
- 3f4:	60 f2       	brcs	.-104    	; 0x38e <SchedularSortTasks+0x40>
+ 37a:	4f 5f       	subi	r20, 0xFF	; 255
+ 37c:	20 91 7c 00 	lds	r18, 0x007C	; 0x80007c <__data_end>
+ 380:	42 17       	cp	r20, r18
+ 382:	60 f2       	brcs	.-104    	; 0x31c <SchedulerStart+0x38>
+/* Function that sort the tasks according to priority              */
 /*******************************************************************/
-void SchedularSortTasks(void)
+static void SchedularSortTasks(void)
 {
 	uint8 i , j  ;
-	vtask TempStruct ;
 	for (i=0; i < No_Of_Elements; ++i)
- 3f6:	4f 2d       	mov	r20, r15
- 3f8:	80 91 7c 00 	lds	r24, 0x007C	; 0x80007c <__data_end>
- 3fc:	48 17       	cp	r20, r24
- 3fe:	08 f4       	brcc	.+2      	; 0x402 <__LOCK_REGION_LENGTH__+0x2>
- 400:	b5 cf       	rjmp	.-150    	; 0x36c <SchedularSortTasks+0x1e>
-				TaskArray[i] = TaskArray[j];
-				TaskArray[j] = TempStruct;
-			}	
-		}
-	}
-}
- 402:	27 96       	adiw	r28, 0x07	; 7
- 404:	0f b6       	in	r0, 0x3f	; 63
- 406:	f8 94       	cli
- 408:	de bf       	out	0x3e, r29	; 62
- 40a:	0f be       	out	0x3f, r0	; 63
- 40c:	cd bf       	out	0x3d, r28	; 61
- 40e:	df 91       	pop	r29
- 410:	cf 91       	pop	r28
- 412:	1f 91       	pop	r17
- 414:	0f 91       	pop	r16
- 416:	ff 90       	pop	r15
- 418:	08 95       	ret
-
-0000041a <SchedulerStart>:
-/* Function that Starts Scheduler                 */
-/**************************************************/
+ 384:	85 2f       	mov	r24, r21
+ 386:	90 91 7c 00 	lds	r25, 0x007C	; 0x80007c <__data_end>
+ 38a:	89 17       	cp	r24, r25
+ 38c:	08 f4       	brcc	.+2      	; 0x390 <SchedulerStart+0xac>
+ 38e:	b6 cf       	rjmp	.-148    	; 0x2fc <SchedulerStart+0x18>
 void SchedulerStart(void)
 {
 	/*Sort Tasks*/
 	SchedularSortTasks();
- 41a:	0e 94 a7 01 	call	0x34e	; 0x34e <SchedularSortTasks>
 	/* Init and start the timer */
 	timer_init(OS_TICK_INTERVAL_MSEC);
- 41e:	8c e7       	ldi	r24, 0x7C	; 124
- 420:	0e 94 32 02 	call	0x464	; 0x464 <timer_init>
+ 390:	8c e7       	ldi	r24, 0x7C	; 124
+ 392:	0e 94 20 02 	call	0x440	; 0x440 <timer_init>
 	
 	/* For every interupt tick (1ms) call the pre_filled func */
 	while(1)
 	{
 		if(Flag == FLAG_SET)
- 424:	80 91 7d 00 	lds	r24, 0x007D	; 0x80007d <Flag>
- 428:	81 30       	cpi	r24, 0x01	; 1
- 42a:	e1 f7       	brne	.-8      	; 0x424 <SchedulerStart+0xa>
+ 396:	80 91 7d 00 	lds	r24, 0x007D	; 0x80007d <Flag>
+ 39a:	81 30       	cpi	r24, 0x01	; 1
+ 39c:	e1 f7       	brne	.-8      	; 0x396 <SchedulerStart+0xb2>
 		{
+			
 			Flag = 0 ;
- 42c:	10 92 7d 00 	sts	0x007D, r1	; 0x80007d <Flag>
+ 39e:	10 92 7d 00 	sts	0x007D, r1	; 0x80007d <Flag>
 			Pre_filled(TaskArray,No_Of_Elements);
- 430:	60 91 7c 00 	lds	r22, 0x007C	; 0x80007c <__data_end>
- 434:	8e e7       	ldi	r24, 0x7E	; 126
- 436:	90 e0       	ldi	r25, 0x00	; 0
- 438:	0e 94 51 01 	call	0x2a2	; 0x2a2 <Pre_filled>
- 43c:	f3 cf       	rjmp	.-26     	; 0x424 <SchedulerStart+0xa>
+ 3a2:	60 91 7c 00 	lds	r22, 0x007C	; 0x80007c <__data_end>
+ 3a6:	8e e7       	ldi	r24, 0x7E	; 126
+ 3a8:	90 e0       	ldi	r25, 0x00	; 0
+ 3aa:	0e 94 51 01 	call	0x2a2	; 0x2a2 <Pre_filled>
+ 3ae:	f3 cf       	rjmp	.-26     	; 0x396 <SchedulerStart+0xb2>
 
-0000043e <BlinkLed0>:
+000003b0 <scheduler_Add_Struct>:
+/* O/p : 1 if added succefully 0 if not                            */
+/* Return : uint8                                                  */
+/* Function that add a new task to the list                        */
+/*******************************************************************/
+uint8 scheduler_Add_Struct(vtask StructToAdd)
+{
+ 3b0:	cf 93       	push	r28
+ 3b2:	df 93       	push	r29
+ 3b4:	cd b7       	in	r28, 0x3d	; 61
+ 3b6:	de b7       	in	r29, 0x3e	; 62
+ 3b8:	27 97       	sbiw	r28, 0x07	; 7
+ 3ba:	0f b6       	in	r0, 0x3f	; 63
+ 3bc:	f8 94       	cli
+ 3be:	de bf       	out	0x3e, r29	; 62
+ 3c0:	0f be       	out	0x3f, r0	; 63
+ 3c2:	cd bf       	out	0x3d, r28	; 61
+ 3c4:	29 83       	std	Y+1, r18	; 0x01
+ 3c6:	3a 83       	std	Y+2, r19	; 0x02
+ 3c8:	4b 83       	std	Y+3, r20	; 0x03
+ 3ca:	5c 83       	std	Y+4, r21	; 0x04
+ 3cc:	6d 83       	std	Y+5, r22	; 0x05
+ 3ce:	7e 83       	std	Y+6, r23	; 0x06
+ 3d0:	8f 83       	std	Y+7, r24	; 0x07
+	/* Check if the list is full */
+	uint8 ReturnCondition = 0 ;
+	if(No_Of_Elements < NUM_OF_TASKS)
+ 3d2:	80 91 7c 00 	lds	r24, 0x007C	; 0x80007c <__data_end>
+ 3d6:	84 30       	cpi	r24, 0x04	; 4
+ 3d8:	b0 f4       	brcc	.+44     	; 0x406 <__LOCK_REGION_LENGTH__+0x6>
+	{
+		/* Add the passed struct the list and inc. the index */
+		TaskArray[No_Of_Elements] = StructToAdd ;
+ 3da:	a0 91 7c 00 	lds	r26, 0x007C	; 0x80007c <__data_end>
+ 3de:	87 e0       	ldi	r24, 0x07	; 7
+ 3e0:	a8 9f       	mul	r26, r24
+ 3e2:	d0 01       	movw	r26, r0
+ 3e4:	11 24       	eor	r1, r1
+ 3e6:	a2 58       	subi	r26, 0x82	; 130
+ 3e8:	bf 4f       	sbci	r27, 0xFF	; 255
+ 3ea:	87 e0       	ldi	r24, 0x07	; 7
+ 3ec:	fe 01       	movw	r30, r28
+ 3ee:	31 96       	adiw	r30, 0x01	; 1
+ 3f0:	01 90       	ld	r0, Z+
+ 3f2:	0d 92       	st	X+, r0
+ 3f4:	8a 95       	dec	r24
+ 3f6:	e1 f7       	brne	.-8      	; 0x3f0 <scheduler_Add_Struct+0x40>
+		No_Of_Elements ++ ;
+ 3f8:	80 91 7c 00 	lds	r24, 0x007C	; 0x80007c <__data_end>
+ 3fc:	8f 5f       	subi	r24, 0xFF	; 255
+ 3fe:	80 93 7c 00 	sts	0x007C, r24	; 0x80007c <__data_end>
+		ReturnCondition = 1 ;
+ 402:	81 e0       	ldi	r24, 0x01	; 1
+ 404:	01 c0       	rjmp	.+2      	; 0x408 <__LOCK_REGION_LENGTH__+0x8>
+	}
+	else
+		ReturnCondition = 0 ;
+ 406:	80 e0       	ldi	r24, 0x00	; 0
+	return ReturnCondition ;
+}		
+ 408:	27 96       	adiw	r28, 0x07	; 7
+ 40a:	0f b6       	in	r0, 0x3f	; 63
+ 40c:	f8 94       	cli
+ 40e:	de bf       	out	0x3e, r29	; 62
+ 410:	0f be       	out	0x3f, r0	; 63
+ 412:	cd bf       	out	0x3d, r28	; 61
+ 414:	df 91       	pop	r29
+ 416:	cf 91       	pop	r28
+ 418:	08 95       	ret
+
+0000041a <BlinkLed0>:
 /* Return : void                                                   */
 /* Function that set led0                                          */
 /*******************************************************************/
 void BlinkLed0 (void)
 {
 	Toggle_Bit(PORTB,LED0);
- 43e:	98 b3       	in	r25, 0x18	; 24
- 440:	80 e1       	ldi	r24, 0x10	; 16
- 442:	89 27       	eor	r24, r25
- 444:	88 bb       	out	0x18, r24	; 24
- 446:	08 95       	ret
+ 41a:	98 b3       	in	r25, 0x18	; 24
+ 41c:	80 e1       	ldi	r24, 0x10	; 16
+ 41e:	89 27       	eor	r24, r25
+ 420:	88 bb       	out	0x18, r24	; 24
+ 422:	08 95       	ret
 
-00000448 <BlinkLed1>:
+00000424 <BlinkLed1>:
 /* Return : void                                                   */
 /* Function that set led1                                          */
 /*******************************************************************/
 void BlinkLed1 (void)
 {
 	Toggle_Bit(PORTB,LED1);
- 448:	98 b3       	in	r25, 0x18	; 24
- 44a:	80 e2       	ldi	r24, 0x20	; 32
- 44c:	89 27       	eor	r24, r25
- 44e:	88 bb       	out	0x18, r24	; 24
- 450:	08 95       	ret
+ 424:	98 b3       	in	r25, 0x18	; 24
+ 426:	80 e2       	ldi	r24, 0x20	; 32
+ 428:	89 27       	eor	r24, r25
+ 42a:	88 bb       	out	0x18, r24	; 24
+ 42c:	08 95       	ret
 
-00000452 <Blinkled2>:
+0000042e <Blinkled2>:
 /* Return : void                                                   */
 /* Function that set led2                                          */
 /*******************************************************************/
 void Blinkled2 (void)
 {
 	Toggle_Bit(PORTB,LED2);
- 452:	98 b3       	in	r25, 0x18	; 24
- 454:	80 e4       	ldi	r24, 0x40	; 64
- 456:	89 27       	eor	r24, r25
- 458:	88 bb       	out	0x18, r24	; 24
- 45a:	08 95       	ret
+ 42e:	98 b3       	in	r25, 0x18	; 24
+ 430:	80 e4       	ldi	r24, 0x40	; 64
+ 432:	89 27       	eor	r24, r25
+ 434:	88 bb       	out	0x18, r24	; 24
+ 436:	08 95       	ret
 
-0000045c <Blinkled3>:
+00000438 <Blinkled3>:
 /* Return : void                                                   */
 /* Function that set led3                                          */
 /*******************************************************************/
 void Blinkled3 (void)
 {
 	Toggle_Bit(PORTB,LED3);
- 45c:	88 b3       	in	r24, 0x18	; 24
- 45e:	80 58       	subi	r24, 0x80	; 128
- 460:	88 bb       	out	0x18, r24	; 24
- 462:	08 95       	ret
+ 438:	88 b3       	in	r24, 0x18	; 24
+ 43a:	80 58       	subi	r24, 0x80	; 128
+ 43c:	88 bb       	out	0x18, r24	; 24
+ 43e:	08 95       	ret
 
-00000464 <timer_init>:
+00000440 <timer_init>:
 /* Function that initalize timer zero                              */
 /*******************************************************************/
 void timer_init(uint8 OCRVal)
 {
 	/* CTC Mode */
 	Set_Bit(TCCR0,3);
- 464:	93 b7       	in	r25, 0x33	; 51
- 466:	98 60       	ori	r25, 0x08	; 8
- 468:	93 bf       	out	0x33, r25	; 51
+ 440:	93 b7       	in	r25, 0x33	; 51
+ 442:	98 60       	ori	r25, 0x08	; 8
+ 444:	93 bf       	out	0x33, r25	; 51
 	Clear_Bit(TCCR0,6);
- 46a:	93 b7       	in	r25, 0x33	; 51
- 46c:	9f 7b       	andi	r25, 0xBF	; 191
- 46e:	93 bf       	out	0x33, r25	; 51
+ 446:	93 b7       	in	r25, 0x33	; 51
+ 448:	9f 7b       	andi	r25, 0xBF	; 191
+ 44a:	93 bf       	out	0x33, r25	; 51
 	
 	/* Set Timer 0 compare match interupt enable */
 	Set_Bit(TIMSK,OCIE0);
- 470:	99 b7       	in	r25, 0x39	; 57
- 472:	92 60       	ori	r25, 0x02	; 2
- 474:	99 bf       	out	0x39, r25	; 57
+ 44c:	99 b7       	in	r25, 0x39	; 57
+ 44e:	92 60       	ori	r25, 0x02	; 2
+ 450:	99 bf       	out	0x39, r25	; 57
 	
 	/* Clear TCNT0 & set OCR0 to 124 (1M sec) */
 	TCNT0 = ZERO ;
- 476:	12 be       	out	0x32, r1	; 50
+ 452:	12 be       	out	0x32, r1	; 50
 	OCR0 = OCRVal ;
- 478:	8c bf       	out	0x3c, r24	; 60
+ 454:	8c bf       	out	0x3c, r24	; 60
 	
 	/* 64 Prescaler */
 	Set_Bit(TCCR0,0);
- 47a:	83 b7       	in	r24, 0x33	; 51
- 47c:	81 60       	ori	r24, 0x01	; 1
- 47e:	83 bf       	out	0x33, r24	; 51
+ 456:	83 b7       	in	r24, 0x33	; 51
+ 458:	81 60       	ori	r24, 0x01	; 1
+ 45a:	83 bf       	out	0x33, r24	; 51
 	Set_Bit(TCCR0,1);
- 480:	83 b7       	in	r24, 0x33	; 51
- 482:	82 60       	ori	r24, 0x02	; 2
- 484:	83 bf       	out	0x33, r24	; 51
+ 45c:	83 b7       	in	r24, 0x33	; 51
+ 45e:	82 60       	ori	r24, 0x02	; 2
+ 460:	83 bf       	out	0x33, r24	; 51
 	Clear_Bit(TCCR0,2);
- 486:	83 b7       	in	r24, 0x33	; 51
- 488:	8b 7f       	andi	r24, 0xFB	; 251
- 48a:	83 bf       	out	0x33, r24	; 51
+ 462:	83 b7       	in	r24, 0x33	; 51
+ 464:	8b 7f       	andi	r24, 0xFB	; 251
+ 466:	83 bf       	out	0x33, r24	; 51
 	
 	/* Set global interupt register */
 	Set_Bit(SREG,GIE);
- 48c:	8f b7       	in	r24, 0x3f	; 63
- 48e:	80 68       	ori	r24, 0x80	; 128
- 490:	8f bf       	out	0x3f, r24	; 63
- 492:	08 95       	ret
+ 468:	8f b7       	in	r24, 0x3f	; 63
+ 46a:	80 68       	ori	r24, 0x80	; 128
+ 46c:	8f bf       	out	0x3f, r24	; 63
+ 46e:	08 95       	ret
 
-00000494 <Set_Call_Back>:
+00000470 <Set_Call_Back>:
 /* Return : void                                                                */
 /* Function that assigns value of call back function to the global pointer      */
 /********************************************************************************/
 void Set_Call_Back(void (*GlobalPtr)(void))
 {
 	CallBack = GlobalPtr ;
- 494:	90 93 9b 00 	sts	0x009B, r25	; 0x80009b <CallBack+0x1>
- 498:	80 93 9a 00 	sts	0x009A, r24	; 0x80009a <CallBack>
- 49c:	08 95       	ret
+ 470:	90 93 9b 00 	sts	0x009B, r25	; 0x80009b <CallBack+0x1>
+ 474:	80 93 9a 00 	sts	0x009A, r24	; 0x80009a <CallBack>
+ 478:	08 95       	ret
 
-0000049e <__vector_10>:
+0000047a <__vector_10>:
 /* I/p : N/A                                                                    */
 /* O/p : N/A                                                                    */
 /* Return : N/A                                                                 */
 /********************************************************************************/
 ISR(TIMER0_COMP_vect)
 {
- 49e:	1f 92       	push	r1
- 4a0:	0f 92       	push	r0
- 4a2:	0f b6       	in	r0, 0x3f	; 63
- 4a4:	0f 92       	push	r0
- 4a6:	11 24       	eor	r1, r1
- 4a8:	2f 93       	push	r18
- 4aa:	3f 93       	push	r19
- 4ac:	4f 93       	push	r20
- 4ae:	5f 93       	push	r21
- 4b0:	6f 93       	push	r22
- 4b2:	7f 93       	push	r23
- 4b4:	8f 93       	push	r24
- 4b6:	9f 93       	push	r25
- 4b8:	af 93       	push	r26
- 4ba:	bf 93       	push	r27
- 4bc:	ef 93       	push	r30
- 4be:	ff 93       	push	r31
+ 47a:	1f 92       	push	r1
+ 47c:	0f 92       	push	r0
+ 47e:	0f b6       	in	r0, 0x3f	; 63
+ 480:	0f 92       	push	r0
+ 482:	11 24       	eor	r1, r1
+ 484:	2f 93       	push	r18
+ 486:	3f 93       	push	r19
+ 488:	4f 93       	push	r20
+ 48a:	5f 93       	push	r21
+ 48c:	6f 93       	push	r22
+ 48e:	7f 93       	push	r23
+ 490:	8f 93       	push	r24
+ 492:	9f 93       	push	r25
+ 494:	af 93       	push	r26
+ 496:	bf 93       	push	r27
+ 498:	ef 93       	push	r30
+ 49a:	ff 93       	push	r31
 	CallBack();
- 4c0:	e0 91 9a 00 	lds	r30, 0x009A	; 0x80009a <CallBack>
- 4c4:	f0 91 9b 00 	lds	r31, 0x009B	; 0x80009b <CallBack+0x1>
- 4c8:	09 95       	icall
- 4ca:	ff 91       	pop	r31
- 4cc:	ef 91       	pop	r30
- 4ce:	bf 91       	pop	r27
- 4d0:	af 91       	pop	r26
- 4d2:	9f 91       	pop	r25
- 4d4:	8f 91       	pop	r24
- 4d6:	7f 91       	pop	r23
- 4d8:	6f 91       	pop	r22
- 4da:	5f 91       	pop	r21
- 4dc:	4f 91       	pop	r20
- 4de:	3f 91       	pop	r19
- 4e0:	2f 91       	pop	r18
- 4e2:	0f 90       	pop	r0
- 4e4:	0f be       	out	0x3f, r0	; 63
- 4e6:	0f 90       	pop	r0
- 4e8:	1f 90       	pop	r1
- 4ea:	18 95       	reti
+ 49c:	e0 91 9a 00 	lds	r30, 0x009A	; 0x80009a <CallBack>
+ 4a0:	f0 91 9b 00 	lds	r31, 0x009B	; 0x80009b <CallBack+0x1>
+ 4a4:	09 95       	icall
+ 4a6:	ff 91       	pop	r31
+ 4a8:	ef 91       	pop	r30
+ 4aa:	bf 91       	pop	r27
+ 4ac:	af 91       	pop	r26
+ 4ae:	9f 91       	pop	r25
+ 4b0:	8f 91       	pop	r24
+ 4b2:	7f 91       	pop	r23
+ 4b4:	6f 91       	pop	r22
+ 4b6:	5f 91       	pop	r21
+ 4b8:	4f 91       	pop	r20
+ 4ba:	3f 91       	pop	r19
+ 4bc:	2f 91       	pop	r18
+ 4be:	0f 90       	pop	r0
+ 4c0:	0f be       	out	0x3f, r0	; 63
+ 4c2:	0f 90       	pop	r0
+ 4c4:	1f 90       	pop	r1
+ 4c6:	18 95       	reti
 
-000004ec <_exit>:
- 4ec:	f8 94       	cli
+000004c8 <_exit>:
+ 4c8:	f8 94       	cli
 
-000004ee <__stop_program>:
- 4ee:	ff cf       	rjmp	.-2      	; 0x4ee <__stop_program>
+000004ca <__stop_program>:
+ 4ca:	ff cf       	rjmp	.-2      	; 0x4ca <__stop_program>

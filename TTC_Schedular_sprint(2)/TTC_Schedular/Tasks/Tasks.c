@@ -5,6 +5,8 @@
  *  Author: AVE-LAP-062
  */ 
 #include "../Includes/Tasks.h"
+#include "../Includes/Schedular.h"
+
 
 /*******************************************************************/
 /* BlinkLed0                                                       */

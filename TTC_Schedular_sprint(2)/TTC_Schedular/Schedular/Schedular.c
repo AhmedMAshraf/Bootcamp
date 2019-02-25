@@ -8,7 +8,7 @@
 
 /*Flag to be set every OS_TICK*/
 uint8 volatile Flag = 0 ;
-
+uint16 volatile Time = 0 ;
 
 /* Number of current elements */
 volatile uint8 No_Of_Elements = 0 ;
@@ -16,6 +16,12 @@ volatile uint8 No_Of_Elements = 0 ;
 
 /*Initalize the TaskArray used by schedular*/
 vtask TaskArray[NUM_OF_TASKS] ;
+
+
+static void SchedularSortTasks(void);
+static void Swap_Tasks (vtask *Task1 , vtask *Task2);
+static void scheduler_Remove_Task(vtask *TaskToDelete);
+
 
 
 /**************************************************/
@@ -52,6 +58,7 @@ void SchedulerStart(void)
 	{
 		if(Flag == FLAG_SET)
 		{
+			
 			Flag = 0 ;
 			Pre_filled(TaskArray,No_Of_Elements);
 		}
@@ -100,7 +107,7 @@ void Pre_filled(vtask ptr[] , uint8 Array_Size)
 /* scheduler_Add_Struct                                            */
 /* Parameters : vtask StructToAdd                                  */
 /* I/p : Array of structs (Tasks)                                  */
-/* O/p : 1 if added succefully 0 if not                                                      */
+/* O/p : 1 if added succefully 0 if not                            */
 /* Return : uint8                                                  */
 /* Function that add a new task to the list                        */
 /*******************************************************************/
@@ -129,20 +136,40 @@ uint8 scheduler_Add_Struct(vtask StructToAdd)
 /* Return : N/A                                                    */
 /* Function that sort the tasks according to priority              */
 /*******************************************************************/
-void SchedularSortTasks(void)
+static void SchedularSortTasks(void)
 {
 	uint8 i , j  ;
-	vtask TempStruct ;
 	for (i=0; i < No_Of_Elements; ++i)
 	{
 		for (j = i+1; j < No_Of_Elements; ++j)
 		{
 			if (TaskArray[i].Priority > TaskArray[j].Priority)
 			{				
-				TempStruct =  TaskArray[i];
-				TaskArray[i] = TaskArray[j];
-				TaskArray[j] = TempStruct;
+				Swap_Tasks(&TaskArray[i],&TaskArray[j]);
 			}	
 		}
 	}
+}
+static void Swap_Tasks (vtask *Task1 , vtask *Task2)
+{
+	vtask TempTask ;
+	TempTask = *Task1 ;
+	*Task1 = *Task2 ;
+	*Task2 = TempTask ;
+}
+
+static void scheduler_Remove_Task(vtask *TaskToDelete)
+{
+	uint8 i ;
+	for(i=0 ; i<No_Of_Elements ; i++)
+	{
+		if(TaskToDelete->TaskPtr == TaskArray[i].TaskPtr)
+		{
+			for(i;i<No_Of_Elements-1;i++)
+			{
+				Swap_Tasks(&TaskArray[i] , &TaskArray[i+1]);
+			}
+		}		
+	}	
+	No_Of_Elements -- ;
 }
