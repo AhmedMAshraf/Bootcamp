@@ -6,6 +6,9 @@
  */ 
 #include "../Includes/Tasks.h"
 
+
+taskType TaskArray[NUM_OF_TASKS]= {BlinkLed0 , BlinkLed1 , Blinkled2 , Blinkled3};
+	
 /*******************************************************************/
 /* BlinkLed0                                                       */
 /* Parameters : N/A                                                */
@@ -16,7 +19,15 @@
 /*******************************************************************/
 void BlinkLed0 (void)
 {
-	Toggle_Bit(PORTB,LED0);
+	/* Check if the periodcity of task has passed to call it*/
+	static uint16 Gticks = 0 ;
+	Gticks++;
+	if(Gticks >= 2000)
+	{
+		Toggle_Bit(PORTB,4);
+		Gticks = 0;
+	}
+	
 }
 
 /*******************************************************************/
@@ -29,7 +40,14 @@ void BlinkLed0 (void)
 /*******************************************************************/
 void BlinkLed1 (void)
 {
-	Toggle_Bit(PORTB,LED1);
+	/* Check if the periodcity of task has passed to call it*/
+	static uint16 Gticks = 0 ;
+	Gticks++;
+	if(Gticks >= 2500)
+	{
+		Toggle_Bit(PORTB,5);
+		Gticks = 0;
+	}
 }
 
 /*******************************************************************/
@@ -42,9 +60,15 @@ void BlinkLed1 (void)
 /*******************************************************************/
 void Blinkled2 (void)
 {
-	Toggle_Bit(PORTB,LED2);
+	/* Check if the periodcity of task has passed to call it*/
+	static uint16 Gticks = 0 ;
+	Gticks++;
+	if(Gticks >= 3000)
+	{
+		Toggle_Bit(PORTB,6);
+		Gticks = 0 ;
+	}
 }
-
 
 /*******************************************************************/
 /* BlinkLed3                                                       */
@@ -56,6 +80,13 @@ void Blinkled2 (void)
 /*******************************************************************/
 void Blinkled3 (void)
 {
-	Toggle_Bit(PORTB,LED3);
+	/* Check if the periodcity of task has passed to call it*/
+	static uint16 Gticks = 0 ;
+	Gticks++;
+	if(Gticks >= 3500)
+	{
+		Toggle_Bit(PORTB,7);
+		Gticks = 0;
+	}
 }
 

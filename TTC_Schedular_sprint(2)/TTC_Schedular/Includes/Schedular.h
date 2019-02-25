@@ -17,6 +17,7 @@ typedef struct
 	void (*TaskPtr)(void);
 	uint16 TaskPeriodicity ;
 	uint16 RunTimeProcessing;
+	uint8 Priority ;
 }vtask;
 
 

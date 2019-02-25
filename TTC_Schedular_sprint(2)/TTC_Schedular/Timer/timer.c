@@ -9,14 +9,14 @@
 
 void (*volatile CallBack)(void);
 
-
-/* timer_init */
-/* Parameters : N/A */
-/* I/p : N/A */
-/* O/p : N/A */
-/* Return : void */
-/* Function that initalize timer zero */
-
+/*******************************************************************/
+/* timer_init                                                      */
+/* Parameters : N/A                                                */
+/* I/p : N/A                                                       */
+/* O/p : N/A                                                       */
+/* Return : void                                                   */
+/* Function that initalize timer zero                              */
+/*******************************************************************/
 void timer_init(uint8 OCRVal)
 {
 	/* CTC Mode */
@@ -39,20 +39,26 @@ void timer_init(uint8 OCRVal)
 	Set_Bit(SREG,GIE);
 }
 
-/* Set_Call_Back */
-/* Parameters : GlobalPtr */
-/* I/p : Ptr to function to be set */
-/* O/p : N/A */
-/* Return : void */
-/* Function that assigns value of call back function to the global function pointer*/
-
+/********************************************************************************/
+/* Set_Call_Back                                                                */
+/* Parameters : GlobalPtr                                                       */
+/* I/p : Ptr to function to be set                                              */
+/* O/p : N/A                                                                    */
+/* Return : void                                                                */
+/* Function that assigns value of call back function to the global pointer      */
+/********************************************************************************/
 void Set_Call_Back(void (*GlobalPtr)(void))
 {
 	CallBack = GlobalPtr ;
 }
 
-/*Interupt service routine for timer0 overflow */
-
+/********************************************************************************/
+/*Interupt service routine for timer0 overflow                                  */
+/* Parameters : N/A                                                             */
+/* I/p : N/A                                                                    */
+/* O/p : N/A                                                                    */
+/* Return : N/A                                                                 */
+/********************************************************************************/
 ISR(TIMER0_COMP_vect)
 {
 	CallBack();
